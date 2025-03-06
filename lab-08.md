@@ -1,7 +1,7 @@
 Lab 08 - University of Edinburgh Art Collection
 ================
-Insert your name here
-Insert date here
+Lilly McClendon
+03.14.2025
 
 ## Load Packages and Data
 
