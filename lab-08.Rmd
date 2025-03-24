@@ -1,21 +1,16 @@
 ---
 title: "Lab 08 - University of Edinburgh Art Collection"
 author: "Lilly McClendon"
-date: "03.14.2025"
+date: "03.28.2025"
 output: github_document
 ---
 
 ## Load Packages and Data  
 
-First, let's load the necessary packages:  
-
 ```{r load-packages, message = FALSE}
 library(tidyverse) 
-library(skimr)
+library(rvest)
 ```
-
-Now, load the dataset. If your data isn't ready yet, you can leave `eval = FALSE` for now and update it when needed.  
-
 
 ```{r load-data, message = FALSE, eval = FALSE}
 # Remove eval = FALSE or set it to TRUE once data is ready to be loaded

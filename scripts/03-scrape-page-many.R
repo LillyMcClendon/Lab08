@@ -13,7 +13,7 @@ urls <- glue("{___}{___}")
 # map over all urls and output a data frame ------------------------------------
 
 #🛑 this takes several minutes to run 🛑 
-___ <- map_dfr(___, ___)
+uoe_art <- map_dfr(uoe_art$link, scrape_art_info)
 
 # write out data frame ---------------------------------------------------------
 
