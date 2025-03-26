@@ -25,7 +25,7 @@ Let's start working with the **title** column by separating the title and the da
 uoe_art <- uoe_art %>%
   separate(title, into = c("title", "date"), sep = "\\(") %>%
   mutate(year = str_remove(date, "\\)") %>% as.numeric()) %>%
-  select(title, artist, year, date)  
+  select(title, artist, year, date)
 ```
 
 
@@ -45,11 +45,63 @@ skim(uoe_art)
 
 111 pieces have artist information missing and 1575 pieces have year information missing. 
 
-*Continue with the same structure as above.*
+## Exercise 12
 
-You're doing great—keep going! Follow the same format and add your response below.  
+```{r histogram}
+library(ggplot2)
+ggplot(uoe_art, aes(x = year)) + 
+  geom_histogram(bins = 50)
+```
+
+There is a value out of the ordinary which is very close to 0 while the next earliest piece made is in the 19th century.  
+
+## Exercise 13
+
+```{r manual_adjust_DeathMask_Piece}
+# Piece Death Mask in row 1413 has the title Death Mask (2) (1964) and the code above was using (2) for the year and date. The code below manually changes it to be correct.
+
+library(dplyr)
+uoe_art_corrected <- uoe_art %>% 
+  mutate(year = if_else(row_number() == 1413, 1964, year))
+
+min(uoe_art_corrected$year, na.rm = TRUE)
+max(uoe_art_corrected$year, na.rm = TRUE)
+```
+
+```{r histogram_with_corrected_data}
+library(ggplot2)
+ggplot(uoe_art_corrected, aes(x = year)) + 
+  geom_histogram(bins = 25)
+```
 
 
-## Additional Exercises  
+Our code did not originally capture the correct year information because it was looking at the first parentheses and this piece had two sets of parentheses in the title. 
 
-Almost there! Keep building on your work and follow the same structure for any remaining exercises. Each exercise builds on the last, so take your time and make sure your code is working as expected.  
+## Exercise 14 
+
+```{r most_featured_artist}
+library(dplyr)
+uoe_art_corrected %>% 
+  count(artist)%>%
+  arrange(desc(n))
+```
+
+The most commonly featured artist in the collection is Emma Gillies. I have never heard of Emma Gillies before, but it seems logical the most pieces in the collection would be from her as she studied at the Edinburgh College of Art. Her brother (also an artist) had served as the Director of the Edinburgh College of Arts. As Emma Gillies passed away at a young age, it seems that her brother may have donated her pieces so that they could be viewed and her work recognized. 
+
+
+## Exercise 15
+
+```{r child_in_title}
+library(stringr)
+library(dplyr)
+
+filtered_uoe_art_corrected <- uoe_art_corrected %>% 
+  filter(rowAny(
+    across(
+      .cols = c(title), 
+      .fns = ~str_detect(., regex("child", ignore_case = TRUE))
+  )))
+```
+
+____ Pieces have the word child in the title. 
+
