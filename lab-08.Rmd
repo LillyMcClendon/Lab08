@@ -1,7 +1,7 @@
 ---
 title: "Lab 08 - University of Edinburgh Art Collection"
 author: "Lilly McClendon"
-date: "03.28.2025"
+date: "03.31.2025"
 output: github_document
 ---
 
@@ -17,9 +17,9 @@ library(rvest)
 uoe_art <- read_csv("data/uoe-art.csv")
 ```
 
-## Exercise 9
+## Exercise 10
 
-Let's start working with the **title** column by separating the title and the date:  
+Separating the title and the date from the title column:  
 
 ```{r separate-title-date, error = TRUE}
 uoe_art <- uoe_art %>%
@@ -28,13 +28,7 @@ uoe_art <- uoe_art %>%
   select(title, artist, year, date)
 ```
 
-
-## Exercise 10  
-
 The warnings mean that there are parts that are not numeric like unknown or possibly. We're okay with leaving the warnings in because our aim is to capture the year when it is convenient to do so, and if it says unknown or has extraneous information that is not a number we don't care because we are looking for the year which is numeric data. 
-
-Feel free to add code chunks as needed. Don't forget to label your code chunk.
-
 
 ## Exercise 11  
 
@@ -88,6 +82,10 @@ uoe_art_corrected %>%
 
 The most commonly featured artist in the collection is Emma Gillies. I have never heard of Emma Gillies before, but it seems logical the most pieces in the collection would be from her as she studied at the Edinburgh College of Art. Her brother (also an artist) had served as the Director of the Edinburgh College of Arts. As Emma Gillies passed away at a young age, it seems that her brother may have donated her pieces so that they could be viewed and her work recognized. 
 
+https://www.royalscottishacademy.org/exhibitions/44-emma-gillies-potter-muse/overview/
+
+https://www.royalscottishacademy.org/artists/408-sir-william-gillies-rsa/overview/
+
 
 ## Exercise 15
 
@@ -95,13 +93,14 @@ The most commonly featured artist in the collection is Emma Gillies. I have neve
 library(stringr)
 library(dplyr)
 
-filtered_uoe_art_corrected <- uoe_art_corrected %>% 
-  filter(rowAny(
-    across(
-      .cols = c(title), 
-      .fns = ~str_detect(., regex("child", ignore_case = TRUE))
-  )))
+count_title_includes_child <- sum(str_detect(uoe_art_corrected$title, regex("child\\b", ignore_case = TRUE)))
+
+count_title_includes_children <- sum(str_detect(uoe_art_corrected$title, regex("child", ignore_case = TRUE)))
+
+print(count_title_includes_child)
+print(count_title_includes_children)
 ```
 
-____ Pieces have the word child in the title. 
+
+9 pieces have the word Child or Child's in the title. 2 pieces have the word children in the title making a total of 11 pieces that have the word Child, Child's, Children, or Children's in the title. 
 
